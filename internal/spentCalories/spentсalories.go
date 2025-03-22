@@ -18,19 +18,22 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	// ваш код ниже
 	sliseStrings := strings.Split(data, ",")
 	if len(sliseStrings) != 3 {
-		return 0, "0", 0, fmt.Errorf("Ошибка")
+		return 0, "0", 0, fmt.Errorf("ошибочный формат пакета")
 	}
 
 	var steps int
 	var err error
 	steps, err = strconv.Atoi(sliseStrings[0])
-	if steps <= 0 || err != nil {
-		return 0, "0", 0, fmt.Errorf("Ошибка")
+	if err != nil {
+		return 0, "0", 0, fmt.Errorf("ошибка")
+	}
+	if steps <= 0 {
+		return 0, "0", 0, fmt.Errorf("ошибочное количество шагов")
 	}
 
 	duration, err := time.ParseDuration(sliseStrings[2])
 	if err != nil {
-		return 0, "0", 0, fmt.Errorf("Ошибка")
+		return 0, "0", 0, fmt.Errorf("ошибка")
 	}
 	return steps, sliseStrings[1], duration, nil
 }

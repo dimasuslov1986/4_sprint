@@ -17,19 +17,22 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// ваш код ниже
 	sliseStrings := strings.Split(data, ",")
 	if len(sliseStrings) != 2 {
-		return 0, 0, fmt.Errorf("Ошибка")
+		return 0, 0, fmt.Errorf("ошибочный формат пакета")
 	}
 
 	var steps int
 	var err error
 	steps, err = strconv.Atoi(sliseStrings[0])
-	if steps <= 0 || err != nil {
-		return 0, 0, fmt.Errorf("Ошибка")
+	if err != nil {
+		return 0, 0, fmt.Errorf("conversion error: %w", err)
+	}
+	if steps <= 0 {
+		return 0, 0, fmt.Errorf("ошибочное количество шагов")
 	}
 
 	duration, err := time.ParseDuration(sliseStrings[1])
 	if err != nil {
-		return 0, 0, fmt.Errorf("Ошибка")
+		return 0, 0, fmt.Errorf("conversion error: %w", err)
 	}
 	return steps, duration, nil
 }
@@ -44,7 +47,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	// ваш код ниже
 	steps, duration, err := parsePackage(data)
 	if err != nil || steps <= 0 {
-		return "Ошибка"
+		return "ошибка"
 	}
 
 	distance := float64(steps) * StepLength / 1000
